@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Role {
+  DISPATCHER
+  COURIER
+}
+enum StopStatus {
+  PENDING
+  ASSIGNED
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+}
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  stopsCreated DeliveryStop[] @relation("DispatcherStops")
+  stopsCourier DeliveryStop[] @relation("CourierStops")
+}
+model DeliveryStop {
+  id           String     @id @default(cuid())
+  code         String     @unique
+  address      String
+  recipient    String
+  notes        String     @default("")
+  status       StopStatus @default(PENDING)
+  dispatcherId String
+  dispatcher   User       @relation("DispatcherStops", fields: [dispatcherId], references: [id])
+  courierId    String?
+  courier      User?      @relation("CourierStops", fields: [courierId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}

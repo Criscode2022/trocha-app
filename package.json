@@ -1,0 +1,1 @@
+{"name":"trocha-app","private":true,"scripts":{"api":"npm --prefix apps/api run start:dev","web":"npm --prefix apps/web run start","db:migrate":"npm --prefix apps/api run prisma:migrate","db:seed":"npm --prefix apps/api run prisma:seed"}}
