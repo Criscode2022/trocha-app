@@ -12,3 +12,7 @@ npm run web   # :4200
 ```
 
 Demo: ops@trocha.log / ruta@trocha.log · password123
+
+### Research → producto (L2)
+- **Volumen del día:** `GET /api/stops/stats/day` + KPIs en consola (benchmarks courier 10–20 / flota 20–60).
+- **Offline courier:** cache de lista + cola de `PATCH status` con flush al recuperar red (`OfflineQueueService`).

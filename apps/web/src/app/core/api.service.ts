@@ -12,6 +12,19 @@ export interface DeliveryStop {
   dispatcher?: { name: string; email: string }; courier?: { name: string; email: string } | null;
   createdAt: string; updatedAt: string;
 }
+export interface DayStats {
+  date: string;
+  total: number;
+  open: number;
+  delivered: number;
+  failed: number;
+  byStatus: Record<StopStatus, number>;
+  researchBenchmarks: {
+    courierStopsPerShift: { min: number; max: number };
+    fleetStopsPerDay: { min: number; max: number };
+    note: string;
+  };
+}
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private http = inject(HttpClient);
@@ -34,6 +47,7 @@ export class ApiService {
     );
   }
   listStops(): Observable<DeliveryStop[]> { return this.http.get<DeliveryStop[]>(`${API}/stops`, this.auth()); }
+  dayStats(): Observable<DayStats> { return this.http.get<DayStats>(`${API}/stops/stats/day`, this.auth()); }
   getStop(id: string): Observable<DeliveryStop> { return this.http.get<DeliveryStop>(`${API}/stops/${id}`, this.auth()); }
   createStop(body: { address: string; recipient: string; notes?: string; courierEmail?: string }) {
     return this.http.post<DeliveryStop>(`${API}/stops`, body, this.auth());

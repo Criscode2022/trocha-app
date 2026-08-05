@@ -20,6 +20,11 @@ export class StopsController {
   list(@Req() req: { user: { userId: string; role: 'DISPATCHER' | 'COURIER' } }) {
     return this.stops.list(req.user.userId, req.user.role);
   }
+  /** Debe ir antes de :id para no capturar "stats". */
+  @Get('stats/day')
+  dayStats(@Req() req: { user: { userId: string; role: 'DISPATCHER' | 'COURIER' } }) {
+    return this.stops.dayStats(req.user.userId, req.user.role);
+  }
   @Get(':id')
   get(@Param('id') id: string, @Req() req: { user: { userId: string; role: 'DISPATCHER' | 'COURIER' } }) {
     return this.stops.get(id, req.user.userId, req.user.role);
